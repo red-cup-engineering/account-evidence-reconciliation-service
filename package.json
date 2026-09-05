@@ -1,0 +1,24 @@
+{
+  "name": "@red-cup-engineering/account-evidence-reconciliation-service",
+  "version": "0.1.5",
+  "type": "module",
+  "files": [
+    "src/",
+    "data/"
+  ],
+  "exports": {
+    ".": "./src/reconcile.mjs",
+    "./src/reconcile.mjs": "./src/reconcile.mjs"
+  },
+  "scripts": {
+    "check": "node --check src/reconcile.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "description": "account-evidence-reconciliation-service sovereign enterprise",
+  "dependencies": {
+    "@red-cup-engineering/semantic-content-identify-service": "0.2.7"
+  },
+  "devDependencies": {
+    "@red-cup-engineering/principal-brokerage-interface": "0.1.4"
+  }
+}
