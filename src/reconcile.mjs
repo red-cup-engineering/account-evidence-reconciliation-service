@@ -1,6 +1,6 @@
-import { EMPTY_WITNESS_ROOT, identifyJsonSemanticContent } from "@red-cup-engineering/computer-code-engineering-services-section/semiotic-expression-notation/semantic-content-identity";
+import { semanticIdOf } from "@red-cup-engineering/computer-code-engineering-services-section/semiotic-expression-notation/semantic-content-identity";
 
-const semanticId = (value) => identifyJsonSemanticContent({ objectKind: "brokerage.account-evidence-reconciliation.record", value, witnessRoot: EMPTY_WITNESS_ROOT }).id;
+const semanticId = semanticIdOf("brokerage.account-evidence-reconciliation.record");
 
 const credential = /^(authorization|api[-_]?key|api[-_]?secret|secret|token|password)$/iu;
 function rejectCredentials(value, seen = new Set()) { if (!value || typeof value !== "object" || seen.has(value)) return; seen.add(value); for (const [key, member] of Object.entries(value)) { if (credential.test(key)) throw new TypeError("credential-bearing-evidence-refused"); rejectCredentials(member, seen); } }
