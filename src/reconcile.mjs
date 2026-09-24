@@ -35,3 +35,10 @@ export function reconcileSnapshots(input) {
     mismatchCount: mismatches.length, disposition: mismatches.length ? "mismatch" : "reconciled", mismatches, selfAttestation: false };
   return Object.freeze({ id: semanticId(body), ...body });
 }
+
+/** Reconcile one customer-supplied pair of Alpaca snapshots, each raw or already normalized. */
+export function reconcileAccountEvidence(request) {
+  if (!request || typeof request !== "object") throw new TypeError("request-object-required");
+  const normalized = (value) => value?.type === "NormalizedBrokerageAccountSnapshot" ? value : normalizeAlpacaSnapshot(value);
+  return reconcileSnapshots({ expected: normalized(request.expected), observed: normalized(request.observed), ...(request.tolerances ? { tolerances: request.tolerances } : {}) });
+}
