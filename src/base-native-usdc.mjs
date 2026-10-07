@@ -1,5 +1,6 @@
 import {semanticIdOf} from '@red-cup-engineering/computer-content-engineering-services-section/semantic-content-identity';
 const identify=semanticIdOf('brokerage.base-account-reconciliation.record');
+const freeze=value=>{if(value&&typeof value==='object'){for(const child of Object.values(value))freeze(child);Object.freeze(value);}return value;};
 const wallet='0x224c08a8526751887a83e2711b167f890c6d078d';
 const router='0x2626664c2603336e57b271c5c0b26f421741e481';
 const usdc='0x833589fcd6edb6e08f4c7c32d4f71b54bda02913';
@@ -36,5 +37,5 @@ export function reconcileBaseNativeUsdc({observed,transaction,before,after,opera
  if(status===1n&&(value<=0n||received<=0n||sent!==0n))mismatches.push({asset:'route',reason:'successful native-input swap must spend ETH and receive USDC only'});
  if(status===0n&&(received!==0n||sent!==0n))mismatches.push({asset:'route',reason:'reverted swap cannot transfer USDC'});
  const body={type:'BaseNativeUsdcAccountReconciliation',version:1,reconciliationScope:'adjacent-block-native-ETH-USDC-WETH-quantities-and-fees',chainId:8453,address:wallet,executionId:observed.executionId,transactionHash:txHash,blockHash,before,after,disposition:status===1n?'succeeded':'reverted',nativeSpentWei:value.toString(),usdcReceivedAtomic:deltaUsdc.toString(),fees:{l2Wei:l2.toString(),l1Wei:l1.toString(),operatorWei:operator.toString(),totalWei:fees.toString()},mismatches,accountReconciled:mismatches.length===0,feesReconciled:mismatches.length===0,realizedPnlUsd:null,costBasisDisposition:'historical-basis-and-usd-marks-required',sourceEvidence:observed.evidence};
- return Object.freeze({id:identify(body),...body});
+ return freeze({id:identify(body),...structuredClone(body)});
 }

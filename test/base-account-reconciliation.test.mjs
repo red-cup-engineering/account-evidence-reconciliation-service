@@ -21,3 +21,5 @@ test('unexplained holdings or fees keep accounting incomplete',()=>{
 test('wrong chain, transaction, boundary, missing fees or duplicated transfers are rejected',()=>{
  for(const change of [i=>i.transaction.chainId='0x1',i=>i.transaction.hash=h('f'),i=>i.after.parentHash=h('e'),i=>delete i.observed.receipt.l1Fee,i=>i.observed.receipt.logs.push({...i.observed.receipt.logs[0]})]){const input=fixture();change(input);assert.throws(()=>reconcileBaseNativeUsdc(input));}
 });
+
+test('content-addressed account evidence cannot change with mutable input',()=>{const input=fixture();const result=reconcileBaseNativeUsdc(input);input.after.nativeBalanceWei='1';assert.notEqual(result.after.nativeBalanceWei,'1');assert.throws(()=>result.fees.totalWei='0');assert.throws(()=>result.mismatches.push({asset:'ETH'}));});
