@@ -3,7 +3,7 @@ import test from "node:test";
 import { reconcileAccountEvidence } from "../src/reconcile.mjs";
 
 const source = { uri: "https://example.invalid/filing", observedAt: "2026-07-22T20:00:00.000Z", digest: "sha256:filing" };
-const snapshot = (cash) => ({ accountReference: "acct-1", observedAt: "2026-07-22T22:20:00.000Z", source, account: { cash, equity: cash, buying_power: cash } });
+const snapshot = (cash) => ({ accountReference: "acct-1", observedAt: "2026-07-22T22:20:00.000Z", source, account: { currency: "USD", cash, equity: cash, buying_power: cash }, positions: [] });
 
 test("a customer-supplied pair of raw Alpaca snapshots is normalized and reconciled", () => {
   const reconciled = reconcileAccountEvidence({ expected: snapshot(100), observed: snapshot(100) });
