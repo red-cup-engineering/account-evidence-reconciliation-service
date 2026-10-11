@@ -1,4 +1,4 @@
-import {semanticIdOf} from '@red-cup-engineering/computer-content-engineering-services-section/semantic-content-identity';
+import {semanticIdOf} from '@red-cup-engineering/computer-content-address-engineering-services-section/semantic-content-identity';
 const identify=semanticIdOf('brokerage.base-account-reconciliation.record');
 const freeze=value=>{if(value&&typeof value==='object'){for(const child of Object.values(value))freeze(child);Object.freeze(value);}return value;};
 const wallet='0x224c08a8526751887a83e2711b167f890c6d078d';
