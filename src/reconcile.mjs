@@ -1,5 +1,5 @@
 import { expandDecimalNotation, addDecimalStrings, negateDecimalString, compareDecimalStrings } from "@red-cup-engineering/exact-number-data-service/decimal-string";
-import { semanticIdOf } from "@red-cup-engineering/computer-content-engineering-services-section/semantic-content-identity";
+import { semanticIdOf } from "@red-cup-engineering/computer-content-address-engineering-services-section/semantic-content-identity";
 
 const semanticId = semanticIdOf("brokerage.account-evidence-reconciliation.record");
 
