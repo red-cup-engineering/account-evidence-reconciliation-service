@@ -122,3 +122,42 @@ export function reconcileAccountEvidence(request) {
 }
 
 export {reconcileBaseNativeUsdc} from './base-native-usdc.mjs';
+
+/**
+ * Cash-flow-adjusted change in account equity over one fully covered interval.
+ * This is an accounting residual, NOT a realized trading profit, risk-adjusted
+ * alpha, or a time-weighted return. Dividends, fees, position marks and other
+ * non-external changes remain inside the residual.
+ *
+ * The caller must independently establish complete CSD/CSW coverage for the
+ * selected interval; this pure calculation cannot certify a broker history.
+ */
+export function cashflowAdjustedEquityChange({
+  openingEquity, closingEquity, externalCashMovements, completeExternalFlowCoverage,
+} = {}) {
+  if (completeExternalFlowCoverage !== true) throw new TypeError("complete-external-flow-coverage-required");
+  if (!Array.isArray(externalCashMovements)) throw new TypeError("external-cash-movements-required");
+  const opening = decimal(openingEquity, "opening-equity");
+  const closing = decimal(closingEquity, "closing-equity");
+  const seen = new Set();
+  const amounts = ["0"];
+  for (const activity of externalCashMovements) {
+    const id = nonempty(activity?.id, "cash-movement-id");
+    if (seen.has(id)) throw new TypeError("duplicate-external-cash-movement");
+    seen.add(id);
+    if (!["CSD", "CSW"].includes(activity.activity_type)) throw new TypeError("external-cash-movement-type-required");
+    const amount = decimal(activity.net_amount, "external-cash-movement-amount");
+    if (activity.activity_type === "CSD" && compareDecimalStrings(amount, "0") <= 0) throw new RangeError("deposit-sign-invalid");
+    if (activity.activity_type === "CSW" && compareDecimalStrings(amount, "0") >= 0) throw new RangeError("withdrawal-sign-invalid");
+    amounts.push(amount);
+  }
+  const netExternalFlow = addDecimalStrings(amounts);
+  return Object.freeze({
+    openingEquity: opening,
+    closingEquity: closing,
+    netExternalFlow,
+    equityChangeExcludingExternalFlows: addDecimalStrings([closing, negateDecimalString(opening), negateDecimalString(netExternalFlow)]),
+    performanceClaim: "cashflow-adjusted-equity-only",
+    independentlyVerifiedFlowCoverage: false,
+  });
+}
