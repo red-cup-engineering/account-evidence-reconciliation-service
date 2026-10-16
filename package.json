@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/account-evidence-reconciliation-service",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "type": "module",
   "files": [
     "src/",
@@ -17,10 +17,11 @@
   "description": "account-evidence-reconciliation-service sovereign enterprise",
   "dependencies": {
     "@red-cup-engineering/exact-number-data-service": "0.1.1",
-    "@red-cup-engineering/computer-content-address-engineering-services-section": "0.2.0"
+    "@red-cup-engineering/computer-content-address-engineering-services-section": "0.2.0",
+    "@red-cup-engineering/computer-data-engineering-services-section": "0.2.0"
   },
   "devDependencies": {
-    "@red-cup-engineering/principal-brokerage-interface": "0.1.5"
+    "@red-cup-engineering/principal-brokerage-interface": "0.1.6"
   },
   "private": false
 }
