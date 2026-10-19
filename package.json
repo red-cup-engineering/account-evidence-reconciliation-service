@@ -17,8 +17,7 @@
   "description": "account-evidence-reconciliation-service sovereign enterprise",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/red-cup-engineering/prediction-market-engineering-services-section.git",
-    "directory": "services/account-evidence-reconciliation-service"
+    "url": "git+https://github.com/red-cup-engineering/account-evidence-reconciliation-service.git"
   },
   "dependencies": {
     "@red-cup-engineering/exact-number-data-service": "0.1.1",
